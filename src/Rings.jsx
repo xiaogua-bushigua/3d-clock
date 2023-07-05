@@ -2,14 +2,14 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const Rings = ({ scale, speed, thickness, color }) => {
+const Rings = ({ scale, speed_1, speed_2, thickness, color }) => {
 	const ring = useRef();
 
 	useFrame(({ mouse }) => {
-		const x = mouse.x / speed / 3;
-		const y = mouse.y / speed / 3;
-		ring.current.rotation.x = -y + ring.current.rotation.x * 0.95;
-		ring.current.rotation.y = x + ring.current.rotation.y * 0.95;
+		const x = mouse.x / speed_1 / 3;
+		const y = mouse.y / speed_1 / 3;
+		ring.current.rotation.x = -y + ring.current.rotation.x * speed_2;
+		ring.current.rotation.y = x + ring.current.rotation.y * speed_2;
 	});
 	return (
 		<group scale={scale} ref={ring}>

@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { DoubleSide } from 'three'
 import { useFrame } from '@react-three/fiber';
 
-const Lines = ({w, h, d, color, envMapIntensity, type}) => {
+const Lines = ({w, h, d, color, envMapIntensity, type, num}) => {
   const line = useRef();
 
   useFrame(({mouse}) => {
@@ -16,20 +16,25 @@ const Lines = ({w, h, d, color, envMapIntensity, type}) => {
     } else if(type === 'minute') {
       line.current.rotation.z = -minuteAngle;
       line.current.position.set(Math.sin(minuteAngle), Math.cos(minuteAngle), 0)
-    } else {
+    } else if(type === 'second') {
       line.current.rotation.z = -secondAngle;
       line.current.position.set(Math.sin(secondAngle), Math.cos(secondAngle), 0)
+    } else {
+      let angle = num / 12 * Math.PI * 2;
+      line.current.rotation.z = -angle;
+      line.current.position.set(1.7*Math.sin(angle), 1.7*Math.cos(angle), 0)
     }
-    const x = mouse.x / 15 / 3;
-		const y = mouse.y / 15 / 3;
-		line.current.rotation.x = -y + line.current.rotation.x * 0.95;
-		line.current.rotation.y = x + line.current.rotation.y * 0.95;
+    const x = mouse.x / 12.5 / 3;
+		const y = mouse.y / 12.5 / 3;
+		line.current.rotation.x = -y + line.current.rotation.x * 0.85;
+		line.current.rotation.y = x + line.current.rotation.y * 0.85;
   })
 
   const getZpos = () => {
     if(type === 'minute') return -d;
     else if (type === 'second') return d;
-    else return 0;
+    else if(type === 'hour') return 0;
+    else return d*10;
   }
   return (
     <group ref={line}>
